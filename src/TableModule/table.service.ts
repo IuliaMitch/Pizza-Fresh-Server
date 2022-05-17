@@ -11,7 +11,7 @@ export class TableService {
   tables: Table[] = [];
 
   findAll() {
-    return 'Buscar todas as Mesas';
+    return this.tables;
   }
   create(createTableDto: CreateTableDto) {
     const table: Table = { id: 'random_id', ...createTableDto }
