@@ -8,17 +8,15 @@ import { TableService } from './table.service';
 
 @Controller('table')
 export class TableController {
-    constructor(private tableService: TableService) {}
+  constructor(private tableService: TableService) {}
 
-    @Get() 
-    findAll() {
-        return this.tableService.findAll()
-    }
+  @Get()
+  findAll() {
+    return this.tableService.findAll();
+  }
 
-    @Post()
-    create(@Body() createTableDto: CreateTableDto) {
-        return this.tableService.create(createTableDto)
-
-    }
-
+  @Post()
+  create(@Body() createTableDto: CreateTableDto) {
+    return this.tableService.create(createTableDto);
+  }
 }
