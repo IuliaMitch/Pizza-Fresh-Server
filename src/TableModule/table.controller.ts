@@ -3,9 +3,11 @@ https://docs.nestjs.com/controllers#controllers
 */
 
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { CreateTableDto } from './DTO/create-table.dto';
 import { TableService } from './table.service';
 
+@ApiTags('table')
 @Controller('table')
 export class TableController {
   constructor(private tableService: TableService) {}
