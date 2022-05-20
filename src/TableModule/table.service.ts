@@ -34,14 +34,11 @@ export class TableService {
   }
 
   update(id: string, dto: UpdateTableDto): Promise<Table> {
-    
-    const data: Partial<Table> = {...dto}
+    const data: Partial<Table> = { ...dto };
 
-    this.prisma.table.update({
-      where: {
-        id
-      },
+    return this.prisma.table.update({
+      where: { id },
       data,
-    })
+    });
   }
 }
