@@ -2,7 +2,7 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTableDto } from './DTO/create-table.dto';
 import { UpdateTableDto } from './DTO/update-table.dto';
@@ -40,10 +40,10 @@ export class TableService {
     return this.findById(id);
   }
 
-  create(dto: CreateTableDto): Promise<Table> {
+  async create(dto: CreateTableDto): Promise<Table> {
     const data: Table = { ...dto };
 
-    return this.prisma.table.create({ data });
+    return this.prisma.table.create({ data }).catch(this.handleError);
   }
 
   async update(id: string, dto: UpdateTableDto): Promise<Table> {
@@ -56,6 +56,7 @@ export class TableService {
       },
       data,
     })
+    .catch(this.handleError);
   }
 
   async delete(id: string) {
@@ -66,5 +67,12 @@ export class TableService {
         id
       }
     })
+  }
+
+  handleError(error: Error): undefined   {
+    const errorLines = error.message?.split('\n')
+    const lastErrorLine = errorLines[errorLines.length - 1]?.trim()
+    throw new UnprocessableEntityException(lastErrorLine || "Algum erro ocorreu ao executar a operação")
+    
   }
 }
