@@ -5,11 +5,13 @@ import { AppService } from './app.service';
 import { TableController } from './TableModule/table.controller';
 import { TableService } from './TableModule/table.service';
 import { PrismaModule } from './prisma/prisma.module';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
         TableModule,
-        PrismaModule, ],
+        PrismaModule,
+        ProductModule, ],
   controllers: [AppController, TableController],
   providers: [AppService, TableService],
 })
