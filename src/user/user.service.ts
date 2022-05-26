@@ -2,11 +2,12 @@
 https://docs.nestjs.com/providers#services
 */
 
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateUserDto } from './DTO/create-user.dto';
 import { UpdateUserDto } from './DTO/update-user.dto';
 import { User } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
@@ -41,17 +42,41 @@ export class UserService {
   }
 
   async create(dto: CreateUserDto): Promise<User> {
+
+    if(dto.password != dto.confirmPassword){
+      throw new BadRequestException('As senhas informadas devem ser iguais!')
+    }
+
     delete dto.confirmPassword;
-    const data: User = { ...dto };
+    const data: User = { 
+      ...dto,
+      password: await bcrypt.hash(dto.password, 10) 
+    };
 
     return this.prisma.user.create({ data }).catch(this.handleError);
   }
 
   async update(id: string, dto: UpdateUserDto): Promise<User> {
     await this.findById(id)
+
+    if(dto.password) {
+      if(dto.password != dto.confirmPassword){
+        throw new BadRequestException('As senhas informadas devem ser iguais!')
+      }
+
+    }
+
+
+
     delete dto.confirmPassword;
 
-    const data: Partial<User> = {...dto}
+    const data: Partial<User> = {
+      ...dto
+    }
+
+    if(data.password){
+      data.password = await bcrypt.hash(data.password, 10);
+    }
 
     return this.prisma.user.update({
       where: {
