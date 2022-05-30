@@ -7,6 +7,8 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './DTO/create-product.dto';
 import { UpdateProductDto } from './DTO/update-product.dto';
 import { Product } from './entities/product.entity';
+import { handleError } from 'utils/handle-error.util';
+
 
 @Injectable()
 export class ProductService {
@@ -43,7 +45,7 @@ export class ProductService {
   async create(dto: CreateProductDto): Promise<Product> {
     const data: Product = { ...dto };
 
-    return this.prisma.product.create({ data }).catch(this.handleError);
+    return this.prisma.product.create({ data }).catch(handleError);
   }
 
   async update(id: string, dto: UpdateProductDto): Promise<Product> {
@@ -56,7 +58,7 @@ export class ProductService {
       },
       data,
     })
-    .catch(this.handleError);
+    .catch(handleError);
   }
 
   async delete(id: string) {
@@ -69,10 +71,5 @@ export class ProductService {
     })
   }
 
-  handleError(error: Error): undefined   {
-    const errorLines = error.message?.split('\n')
-    const lastErrorLine = errorLines[errorLines.length - 1]?.trim()
-    throw new UnprocessableEntityException(lastErrorLine || "Algum erro ocorreu ao executar a operação")
-    
-  }
+
 }
