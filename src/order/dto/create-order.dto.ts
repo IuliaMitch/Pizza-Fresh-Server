@@ -20,7 +20,7 @@ export class CreateOrderDto {
     @IsUUID(undefined, { each: true })
     @ApiProperty({
         description: "Lista com os ID's dos produtos que estão no pedido",
-        example: '["d47e231e-f589-470a-83d6-68c5b4225be4", ...]',
+        example: '["d47e231e-f589-470a-83d6-68c5b4225be4", "2c65b056-d68b-4523-96ec-802feaaa16ef"]',
     })
     products: string[];
 
