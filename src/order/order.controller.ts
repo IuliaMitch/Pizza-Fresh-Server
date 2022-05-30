@@ -12,8 +12,8 @@ export class OrderController {
   @ApiOperation({
     summary: 'Criar um pedido'
   })
-  create(@Body() createOrderDto: CreateOrderDto) {
-    return this.orderService.create(createOrderDto);
+  create(@Body() dto: CreateOrderDto) {
+    return this.orderService.create(dto);
   }
 
   @Get()
