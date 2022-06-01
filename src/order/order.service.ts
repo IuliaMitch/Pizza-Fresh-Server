@@ -49,6 +49,8 @@ export class OrderService {
           },
           products: {
             select: {
+              description: true,
+              quantity: true,
               product: {
                 select: {
                   name: true,
